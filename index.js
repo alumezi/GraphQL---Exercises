@@ -1,10 +1,11 @@
+require("dotenv").config();
 const { v1: uuid } = require("uuid");
 const { ApolloServer, gql, UserInputError } = require("apollo-server");
 const mongoose = require("mongoose");
 const Book = require("./models/book");
 const Author = require("./models/author");
 
-const MONGODB_URI = "";
+const MONGODB_URI = process.env.MONGODB_URI;
 mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,
