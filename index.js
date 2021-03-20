@@ -94,13 +94,22 @@ const resolvers = {
         });
       }
     },
-    editAuthor: (root, args) => {
-      //
-      const author = authors.find((item) => item.name === args.name);
-      if (author && args.setBornTo) {
-        author.born = args.setBornTo;
+    editAuthor: async (root, args) => {
+      try {
+        let author = await Author.findOne({ name: args.name });
+        console.log(author);
+        if (author && args.setBornTo) {
+          author.born = args.setBornTo;
+          await author.save();
+        } else {
+          throw new UserInputError("Oops! We could not find that Author!");
+        }
+        return author;
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        });
       }
-      return author;
     },
   },
 };
